@@ -1,0 +1,16 @@
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\obj\Debug\Broker.Data.csprojResolveAssemblyReference.cache
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Broker.Data.dll.config
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Broker.Data.dll
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Broker.Data.pdb
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Broker.Models.dll
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\EntityFramework.dll
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\EntityFramework.SqlServer.dll
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Broker.Models.pdb
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\EntityFramework.xml
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\EntityFramework.SqlServer.xml
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\obj\Debug\Broker.Data.dll
+c:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Data\obj\Debug\Broker.Data.pdb
