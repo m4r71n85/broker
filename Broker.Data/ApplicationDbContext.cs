@@ -15,7 +15,8 @@ namespace Broker.Data
         public ApplicationDbContext()
             : base("DefaultConnection")
         {
-            //Database.SetInitializer<ApplicationDbContext>(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
+            Database.SetInitializer(
+                new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
         }
 
         public IDbSet<Agency> Agencies { get; set; }

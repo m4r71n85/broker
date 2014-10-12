@@ -17,10 +17,11 @@ using System.Data.Entity;
 namespace Broker.Web.Controllers
 {
     [Authorize]
-    public class AccountController : BaseController
+    public class AccountController : Controller
     {
         public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
+            : this(new UserManager<ApplicationUser>(
+                new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
         }
 
@@ -348,7 +349,7 @@ namespace Broker.Web.Controllers
             if (ModelState.IsValid)
             {
                 if (profileImage != null) {
-                    details.Image = this.SaveFile(profileImage, ModelState);
+                    //details.Image = this.SaveFile(profileImage, ModelState);
                 }
                 ApplicationUser user = new ApplicationUser()
                 {

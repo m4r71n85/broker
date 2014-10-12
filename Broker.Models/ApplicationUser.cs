@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Broker.Models
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        public virtual int? AgencyId { get; set; }
         public virtual Agency Agency { get; set; }
         public bool IsAgencyCreator { get; set; }
         public string Image { get; set; }
