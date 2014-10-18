@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
+@using Broker.Web.Constants
+
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -18,10 +20,31 @@
                     <li>
                         @Html.ActionLink("Change password", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })
                     </li>
+                    @if (ViewBag.ApplicationUser.Agency != null)
+                    {
+                        <li>@Html.ActionLink("My Agency", "Details", "Agency", new{ id = ViewBag.ApplicationUser.Agency.Id }, null)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Create Agency", "Create", "Agency")</li>
+                        <li>@Html.ActionLink("Join Agency", "Index", "Agency")</li>
+                    }
                     <li>
                         <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a href="@Url.Action("Details", "Account")" style="padding-bottom:0">
+                    @if (ViewBag.ApplicationUser.Image != null)
+                    {
+                        <img src="@Html.Image((string)ViewBag.ApplicationUser.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" />
+                    }
+                    else
+                    {
+                        <span class="glyphicon glyphicon-user" style="font-size:25px"></span>
+                    }
+                </a>
             </li>
         </ul>
     }

@@ -11,9 +11,11 @@ namespace Broker.Models
     {
         private List<ApplicationUser> users;
 
-        public Agency(){
+        public Agency()
+        {
             users = new List<ApplicationUser>();
         }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }

@@ -1,3 +1,4 @@
+C:\Users\marti_000\Documents\Visual Studio 2013\Projects\broker\Broker.Web\bin\EntityFramework.xml
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\AutoMapper.Net4.dll
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Broker.Web.dll.config
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Broker.Web.dll
@@ -8,6 +9,9 @@ C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\B
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Broker.Models.dll
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\EntityFramework.dll
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\EntityFramework.SqlServer.dll
+C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\GoogleQRGenerator.dll
+C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\ImageResizer.dll
+C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\ImageResizer.Mvc.dll
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Microsoft.AspNet.Identity.Core.dll
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Microsoft.AspNet.Identity.Owin.dll
@@ -35,8 +39,9 @@ C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\B
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Broker.Models.pdb
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Antlr3.Runtime.pdb
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\AutoMapper.xml
-C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\EntityFramework.xml
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\EntityFramework.SqlServer.xml
+C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\ImageResizer.xml
+C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\ImageResizer.Mvc.xml
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Microsoft.AspNet.Identity.Core.xml
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Web\bin\Microsoft.AspNet.Identity.Owin.xml

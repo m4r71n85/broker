@@ -22,5 +22,6 @@ C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Models\bi
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Models\bin\Debug\Microsoft.Owin.Security.Cookies.xml
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Models\bin\Debug\Microsoft.Owin.Security.OAuth.xml
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Models\bin\Debug\Newtonsoft.Json.xml
+C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Models\obj\Debug\Broker.Models.csprojResolveAssemblyReference.cache
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Models\obj\Debug\Broker.Models.dll
 C:\Users\marti_000\documents\visual studio 2013\Projects\broker\Broker.Models\obj\Debug\Broker.Models.pdb

@@ -1,41 +1,108 @@
 ﻿@model Broker.Models.Agency
+@using Broker.Web.Helpers
+@using Broker.Web.Constants
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Agency</h4>
-	<hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-
-    </dl>
+<div class="row">
+    <div class="col-xs-5">
+        <img src="@Html.Image(Model.Image, ImageType.AgencyLogo, ImageSizes.Normal)" />
+    </div>
+    <div class="col-xs-7">
+        <h1>@Model.Name</h1>
+        @Model.Description
+    </div>
 </div>
+<div style="margin-top: 20px">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#details" role="tab" data-toggle="tab">Details</a></li>
+        <li><a href="#participants" role="tab" data-toggle="tab">Participants</a></li>
+        <li><a href="#comments" role="tab" data-toggle="tab">Comments</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="row">
+        <div class="col-xs-10">
+            <div class="tab-content">
+                <div class="tab-pane active" id="details">
+                    <div class="row">
+                        <div class="col-sm-6 ">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    Rank
+                                </div>
+                                <div class="col-xs-9">
+                                    8.9 / 9
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    Participants
+                                </div>
+                                <div class="col-xs-9">
+                                    78
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    Qr code
+                                </div>
+                                <div class="col-xs-9">
+                                    <img src="@Html.GoogleQrImage(Request.Url.ToString())" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    Email:
+                                </div>
+                                <div class="col-xs-9">
+                                    @Model.Email
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    Home phone:
+                                </div>
+                                <div class="col-xs-8">
+                                    @Model.HomePhone
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    Mobile phone:
+                                </div>
+                                <div class="col-xs-9">
+                                    @Model.MobilePhone
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    Address:
+                                </div>
+                                <div class="col-xs-9">
+                                    <img src="@Html.GoogleStaticImage(Model.Address)" />
+                                    @Model.Address
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="participants">
+                    @foreach (var user in @Model.Users)
+                    {
+                        <p>@user.FirstName</p>
+                    }
+                </div>
+                <div class="tab-pane" id="comments">...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

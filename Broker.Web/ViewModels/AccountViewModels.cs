@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Broker.Web.Models
+namespace Broker.Web.ViewModels
 {
     public class ExternalLoginConfirmationViewModel
     {

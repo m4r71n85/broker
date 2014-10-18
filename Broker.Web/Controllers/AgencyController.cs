@@ -9,11 +9,19 @@ using System.Web;
 using System.Web.Mvc;
 using Broker.Models;
 using Broker.Data;
+using Broker.Web.ViewModels;
+using Broker.Web.Helpers;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Broker.Web.Constants;
+using ImageResizer;
+using System.IO;
 
 namespace Broker.Web.Controllers
 {
-    public class AgencyController : Controller
+    public class AgencyController : BaseController
     {
+        
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: /Agency/
@@ -34,30 +42,49 @@ namespace Broker.Web.Controllers
             {
                 return HttpNotFound();
             }
+            
+            ViewBag.googleQr =  new GoogleQRGenerator.GoogleQr(
+                Url.Action("Details", "Agency", new { id = agency.Id }, 
+                this.Request.Url.Scheme), "200x200", false);
             return View(agency);
         }
 
         // GET: /Agency/Create
         public ActionResult Create()
         {
+            var userId = User.Identity.GetUserId();
+            ViewBag.roles = UserManager.GetRoles(userId);
             return View();
         }
 
-        // POST: /Agency/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include="Id,Name,Image,Address")] Agency agency)
+        public ActionResult Create([Bind(Include = "Name,Image,Description,Email,HomePhone,MobilePhone,Address")] AgencyViewModel agencyVm,
+            HttpPostedFileBase imageFile)
         {
+            if (imageFile != null)
+            {
+                agencyVm.Image = SaveImage.Save(imageFile, ImageType.AgencyLogo);
+                ModelState.Remove("Image");
+            }
+            
             if (ModelState.IsValid)
             {
+                var agency = new Agency() { Image = agencyVm.Image, Address = agencyVm.Address, Description = agencyVm.Description, Email = agencyVm.Email, HomePhone = agencyVm.HomePhone, MobilePhone = agencyVm.MobilePhone, Name = agencyVm.Name };
                 db.Agencies.Add(agency);
-                await db.SaveChangesAsync();
+                db.SaveChanges( );
+                
+                ApplicationUser.IsAgencyCreator = true;
+                ApplicationUser.Agency = agency;
+
+                //var roles = UserManager.GetRoles(userId);
+                //UserManager.RemoveFromRoles(userId, roles.ToArray());
+                UserManager.AddToRole(ApplicationUser.Id, UserRoles.CompanyCreator);
+
                 return RedirectToAction("Index");
             }
 
-            return View(agency);
+            return View(agencyVm);
         }
 
         // GET: /Agency/Edit/5
@@ -112,6 +139,19 @@ namespace Broker.Web.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             Agency agency = await db.Agencies.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var imageFile = agency.Image;
+            if (imageFile!=null)
+            {
+                var imageSizes = ImageSizes.GetSizes(ImageType.AgencyLogo, imageFile);
+                foreach (var imageSize in imageSizes)
+                {
+                    string fullPath = Request.MapPath(imageSize.Path);
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+                }
+            }
             db.Agencies.Remove(agency);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

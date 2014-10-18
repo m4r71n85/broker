@@ -1,4 +1,7 @@
 ﻿using Broker.Data;
+using Broker.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,38 +13,21 @@ namespace Broker.Web.Controllers
 {
     public class BaseController : Controller
     {
-        public ApplicationDbContext db = new ApplicationDbContext();
+        public BaseController()
+            : this(new UserManager<ApplicationUser>(
+                new UserStore<ApplicationUser>(new ApplicationDbContext())))
+        {
+        }
 
-        protected string SaveFile(HttpPostedFileBase image, ModelStateDictionary ModelState)
+        public BaseController(UserManager<ApplicationUser> userManager)
         {
-            string subDir = "Raw";
-            return this.SaveFile(image, ModelState, subDir);
+            UserManager = userManager;
+            var userId = System.Web.HttpContext.Current.User;
+            ApplicationUser = UserManager.FindById(userId.Identity.GetUserId());
+
+            ViewBag.ApplicationUser = ApplicationUser;
         }
-        protected string SaveFile(HttpPostedFileBase image, ModelStateDictionary ModelState, string subDir)
-        {
-            if (image != null)
-            {
-                string path = Server.MapPath("~/Content/Images/" + subDir);
-                if (image.ContentLength > 10240 && false)
-                {
-                    ModelState.AddModelError("photo", "The size of the file should not exceed 10 KB");
-                    return null;
-                }
-                var supportedTypes = new[] { "jpg", "jpeg", "png" };
-                var fileExt = System.IO.Path.GetExtension(image.FileName).Substring(1);
-                if (!supportedTypes.Contains(fileExt))
-                {
-                    ModelState.AddModelError("Image", "Invalid type. Only the following types (jpg, jpeg, png) are supported.");
-                    return null;
-                }
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                image.SaveAs(Path.Combine(path, image.FileName));
-                return image.FileName;
-            }
-            return null;
-        }
+        public UserManager<ApplicationUser> UserManager { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 	}
 }

@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using Broker.Web.Models;
+using Broker.Web.ViewModels;
 using Broker.Models;
 using Broker.Data;
 using System.Net;
@@ -17,7 +17,7 @@ using System.Data.Entity;
 namespace Broker.Web.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         public AccountController()
             : this(new UserManager<ApplicationUser>(
@@ -27,10 +27,8 @@ namespace Broker.Web.Controllers
 
         public AccountController(UserManager<ApplicationUser> userManager)
         {
-            UserManager = userManager;
         }
 
-        public UserManager<ApplicationUser> UserManager { get; private set; }
 
         //
         // GET: /Account/Login

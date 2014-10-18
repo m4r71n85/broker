@@ -1,4 +1,5 @@
-﻿@model Broker.Models.Agency
+﻿@using Broker.Web.ViewModels
+@model AgencyViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -6,15 +7,26 @@
 
 <h2>Create</h2>
 
-
-@using (Html.BeginForm()) 
+@foreach (var item in ViewBag.roles)
+{
+    <p>@item</p>
+}
+@using (Html.BeginForm("Create", "Agency", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Agency</h4>
-        <hr />
+
         @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="imageFile" />
+                @Html.ValidationMessageFor(model => model.Image)
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
@@ -25,18 +37,47 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Image)
-                @Html.ValidationMessageFor(model => model.Image)
+                @Html.TextAreaFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+    
+        <div class="form-group">
+            @Html.LabelFor(model => model.HomePhone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HomePhone)
+                @Html.ValidationMessageFor(model => model.HomePhone)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MobilePhone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MobilePhone)
+                @Html.ValidationMessageFor(model => model.MobilePhone)
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Address)
+                <input type="text" id="us2-address" style="width: 400px" name="@Html.NameFor(m=>m.Address)" class="form-control"/>
                 @Html.ValidationMessageFor(model => model.Address)
+                <div id="us2" style="width: 300px; height: 300px;"></div>
+               
+
+           
+
             </div>
         </div>
 
@@ -54,4 +95,15 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+    $('#us2').locationpicker({
+        location: { latitude: 46.15242437752303, longitude: 2.7470703125 },
+        radius: 0,
+        inputBinding: {
+            locationNameInput: $('#us2-address')
+        },
+        enableAutocomplete: true
+    });
+</script>	
 }
