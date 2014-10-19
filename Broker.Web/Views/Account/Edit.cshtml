@@ -1,0 +1,101 @@
+﻿@model DetailsViewModel
+
+@{
+    ViewBag.Title = "User Details";
+}
+
+
+<h2>Details</h2>
+
+@using (Html.BeginForm("Edit", "Account", FormMethod.Post, 
+    new { enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Set Details Form</h4>
+    <hr />
+    @Html.ValidationSummary()
+    <div class="form-group">
+        
+        @Html.LabelFor(m => m.Image, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @if (Model.Image!=null) { 
+                <img src="@Html.Image(Model.Image, ImageType.ProfilePhoto, ImageSizes.Normal)" class="img-circle"/>
+            }
+            <input type="file" name="imageFile" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>    
+    <div class="form-group">
+        @Html.LabelFor(m => m.PhoneCell, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PhoneCell, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PhoneHome, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PhoneHome, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PhoneWork, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PhoneWork, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", id = "us2-address", style = "width: 400px" })
+            @Html.ValidationMessageFor(model => model.Address)
+            @if (Model.Address!=null) { 
+                <img src="@Html.GoogleStaticImage(Model.Address)"/>
+            }
+            else 
+            { 
+                <div id="us2" style="width: 300px; height: 300px;"></div>
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save changes" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+@section Scripts{
+    @if (Model.Address==null) {
+<script>
+        
+        $('#us2').locationpicker({
+            locationName: "@Model.Address",
+            //location: { latitude: 46.15242437752303, longitude: 2.7470703125 },
+            radius: 0,
+            inputBinding: {
+                locationNameInput: $('#us2-address')
+            },
+            enableAutocomplete: true,
+        });
+    </script>
+    }
+}
+

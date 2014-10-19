@@ -7,6 +7,13 @@ using System.Web;
 
 namespace Broker.Web.ViewModels
 {
+    public class AgencyViewTeasedModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
+
+    }
     public class AgencyViewModel
     {
         private List<ApplicationUser> users;

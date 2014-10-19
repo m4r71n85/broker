@@ -42,9 +42,9 @@ namespace Broker.Data.Migrations
             {
                 var store = new RoleStore<IdentityRole>(context);
                 var manager = new RoleManager<IdentityRole>(store);
-                manager.Create(new IdentityRole { Name = "admin" });
-                manager.Create(new IdentityRole { Name = "company participant" });
-                manager.Create(new IdentityRole { Name = "company creator" });
+                manager.Create(new IdentityRole { Name = "Admin" });
+                manager.Create(new IdentityRole { Name = "CompanyParticipant" });
+                manager.Create(new IdentityRole { Name = "CompanyCreator" });
             }
         }
     }

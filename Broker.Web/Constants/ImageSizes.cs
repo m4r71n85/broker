@@ -11,7 +11,7 @@ namespace Broker.Web.Constants
         public static ImageSettings Original = new ImageSettings() { Name = "Original", Instructions = new Instructions(){ Mode = FitMode.Max, Width = 200, Height = 200 } };
         public static ImageSettings Big = new ImageSettings() { Name = "Big", Instructions = new Instructions(){ Mode = FitMode.Max, Width = 200, Height = 200 } };
         public static ImageSettings Normal = new ImageSettings() { Name = "Normal", Instructions = new Instructions(){ Mode = FitMode.Max, Width = 400, Height = 250 } };
-        public static ImageSettings Small = new ImageSettings() { Name = "Small", Instructions = new Instructions() { Mode = FitMode.Max, Width = 20, Height = 20 } };
+        public static ImageSettings Small = new ImageSettings() { Name = "Small", Instructions = new Instructions() { Mode = FitMode.Max, Width = 90, Height = 50 } };
         public static ImageSettings Tiny = new ImageSettings() { Name = "Tiny", Instructions = new Instructions() { Mode = FitMode.Max, Width = 50, Height = 50 } };
 
         public static List<ImageSettings> GetSizes(string imageType)
@@ -21,7 +21,7 @@ namespace Broker.Web.Constants
         }
         public static List<ImageSettings> GetSizes(string imageType, string fileName)
         {
-            var sizes = new List<ImageSettings>() { Original, Big, Normal, Small };
+            var sizes = new List<ImageSettings>() { Original, Big, Normal, Small, Tiny };
             foreach (var size in sizes)
             {
                 size.Path = GetPath(imageType, fileName, size);

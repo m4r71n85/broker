@@ -35,10 +35,10 @@
                 </ul>
             </li>
             <li>
-                <a href="@Url.Action("Details", "Account")" style="padding-bottom:0">
+                <a href="@Url.Action("Details", "Account")" style="padding-bottom:8px; padding-top:10px;">
                     @if (ViewBag.ApplicationUser.Image != null)
                     {
-                        <img src="@Html.Image((string)ViewBag.ApplicationUser.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" />
+                        <img src="@Html.Image((string)ViewBag.ApplicationUser.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" style="height:32px" class="img-circle"/>
                     }
                     else
                     {

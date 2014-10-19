@@ -279,6 +279,7 @@
     <Content Include="Views\Agency\Details.cshtml" />
     <Content Include="Views\Agency\Edit.cshtml" />
     <Content Include="Views\Agency\Index.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>

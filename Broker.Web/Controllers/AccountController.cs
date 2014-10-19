@@ -13,23 +13,14 @@ using Broker.Models;
 using Broker.Data;
 using System.Net;
 using System.Data.Entity;
+using Broker.Web.Helpers;
+using Broker.Web.Constants;
 
 namespace Broker.Web.Controllers
 {
     [Authorize]
     public class AccountController : BaseController
     {
-        public AccountController()
-            : this(new UserManager<ApplicationUser>(
-                new UserStore<ApplicationUser>(new ApplicationDbContext())))
-        {
-        }
-
-        public AccountController(UserManager<ApplicationUser> userManager)
-        {
-        }
-
-
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -82,6 +73,7 @@ namespace Broker.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { UserName = model.UserName };
+                
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -322,19 +314,27 @@ namespace Broker.Web.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult Details()
+        [Authorize]
+        public ActionResult Details(string id)
         {
-            ApplicationUser user = UserManager.FindById(User.Identity.GetUserId());
-            DetailsViewModel details = new DetailsViewModel();
-            if(user != null) {
-                details.Address = user.Address;
-                details.Email = user.Email;
-                details.FirstName = user.FirstName;
-                details.Image = user.Image;
-                details.LastName = user.LastName;
-                details.PhoneCell = user.PhoneCell;
-                details.PhoneHome = user.PhoneHome;
-                details.PhoneWork = user.PhoneHome;
+            var user = ApplicationUser;
+            if (id != null)
+            {
+                user = UserManager.FindById(id);
+            }
+            var agency = new AgencyViewTeasedModel();
+            if (user.Agency != null) { 
+                agency = new AgencyViewTeasedModel() { Id = user.Agency.Id, Image = user.Agency.Image, Name = user.Agency.Name };
+            }
+            var details = new DetailsFullViewModel() { Id = user.Id, Agency = agency, Address = user.Address, Email = user.Email, FirstName = user.FirstName, Image = user.Image, LastName = user.LastName, PhoneCell = user.PhoneCell, PhoneHome = user.PhoneHome, PhoneWork = user.PhoneHome };
+            return View(details);
+        }
+
+        public ActionResult Edit()
+        {
+            var details = new DetailsViewModel();
+            if(ApplicationUser != null) {
+                details = new DetailsViewModel() { Address = ApplicationUser.Address, Email = ApplicationUser.Email, FirstName = ApplicationUser.FirstName, Image = ApplicationUser.Image, LastName = ApplicationUser.LastName, PhoneCell = ApplicationUser.PhoneCell, PhoneHome = ApplicationUser.PhoneHome, PhoneWork = ApplicationUser.PhoneHome };
             };
 
             return View(details);
@@ -342,22 +342,27 @@ namespace Broker.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Details(DetailsViewModel details, HttpPostedFileBase profileImage)
+        public ActionResult Edit(DetailsViewModel details, HttpPostedFileBase imageFile)
         {
-            if (ModelState.IsValid)
+            if (imageFile != null)
             {
-                if (profileImage != null) {
-                    //details.Image = this.SaveFile(profileImage, ModelState);
-                }
-                ApplicationUser user = new ApplicationUser()
-                {
-                    Address = details.Address, Email = details.Email, FirstName = details.FirstName, Image = details.Image,
-                    LastName = details.LastName, PhoneCell = details.PhoneCell, PhoneHome = details.PhoneHome, PhoneWork = details.PhoneHome
-                };
-
-                UserManager.Update(user);
+                details.Image = SaveImage.Save(imageFile, ImageType.ProfilePhoto);
+                ModelState.Remove("Image");
             }
 
+            if (ModelState.IsValid)
+            {
+                ApplicationUser.Address = details.Address;
+                ApplicationUser.Email = details.Email;
+                ApplicationUser.FirstName = details.FirstName;
+                ApplicationUser.Image = details.Image ?? ApplicationUser.Image;
+                ApplicationUser.LastName = details.LastName;
+                ApplicationUser.PhoneCell = details.PhoneCell;
+                ApplicationUser.PhoneHome = details.PhoneHome;
+                ApplicationUser.PhoneWork = details.PhoneHome;
+
+                UserManager.Update(ApplicationUser);
+            }
             return View(details);
         }
 

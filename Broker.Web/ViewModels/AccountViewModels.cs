@@ -87,4 +87,35 @@ namespace Broker.Web.ViewModels
         [Display(Name = "Phone number (GSM)")]
         public string PhoneCell { get; set; }
     }
+
+    public class DetailsFullViewModel
+    {
+        public string Id { get; set; }
+
+        [Display(Name = "Profile photo")]
+        public string Image { get; set; }
+
+        [Display(Name = "First name")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last name")]
+        public string LastName { get; set; }
+
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+        [Display(Name = "Phone number (Home)")]
+        public string PhoneHome { get; set; }
+
+        [Display(Name = "Phone number (Work)")]
+        public string PhoneWork { get; set; }
+
+        [Display(Name = "Phone number (GSM)")]
+        public string PhoneCell { get; set; }
+        public bool isAgencyCreator { get; set; }
+        public AgencyViewTeasedModel Agency { get; set; }
+    }
 }

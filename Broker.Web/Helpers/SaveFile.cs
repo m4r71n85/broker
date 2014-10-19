@@ -16,7 +16,7 @@ namespace Broker.Web.Helpers
             string fileName = "";
             if (file != null && file.ContentLength > 0)
             {
-                var imageSettings = ImageSizes.GetSizes(ImageType.AgencyLogo);
+                var imageSettings = ImageSizes.GetSizes(imageType);
                 foreach (var imageSetting in imageSettings)
                 {
                     var job = new ImageJob(file, imageSetting.Path, new Instructions(imageSetting.Instructions));
