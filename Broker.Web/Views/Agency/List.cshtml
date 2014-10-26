@@ -1,0 +1,38 @@
+﻿@using Broker.Models
+@model System.Collections.Generic.IEnumerable<Agency>
+
+@{
+    ViewBag.Title = "Agencies";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>Logo</th>
+        <th>Company Name</th>
+        <th>Participants</th>
+        <th>Address</th>
+        <th></th>
+    </tr>
+
+@foreach (Agency item in Model)
+{
+    <tr>
+        <td>
+            <img src="@Html.Image(item.Image, ImageType.AgencyLogo, ImageSizes.Small)"/>
+        </td>
+        <td>@item.Name</td>
+        <td>@item.Participants.Count</td>
+        <td>@item.Address</td>
+        <td>
+            @Html.ActionLink("Details", "Details", htmlAttributes: new { @class = "btn btn-info btn-sm" }, routeValues: new { id = item.Id })
+            @if (!User.IsInRole(UserRoles.CompanyParticipator))
+            {
+                @Html.ActionLink("Join", "Join", htmlAttributes: new {@class = "btn btn-info btn-sm"}, routeValues: new {id = item.Id});
+            }
+        </td>
+    </tr>
+}
+
+</table>

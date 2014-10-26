@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Broker.Models
+@model Broker.Models.Mail
+           
+@{
+    ViewBag.Title = @Model.Title;
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-xs-6">
+        <div class="row">
+            <div class="col-xs-2">
+                From:
+            </div>
+            <div class="col-xs-10">
+                <img src="@Html.Image(@Model.FromUser.Image, ImageType.ProfilePhoto, ImageSizes.Small)"/>
+                @Model.FromUser.FirstName @Model.FromUser.LastName
+                <a href="@Url.Action("Details", "Account", new{id=Model.FromUser.Id})" class="btn btn-info btn-sm">View Profile</a>
+            </div>
+            <div class="col-xs-2">
+                Body:
+            </div>
+            <div class="col-xs-10">
+                @Model.Body
+                @if (Model.MailType == MailType.ParticipationRequest)
+                {
+                    <br/>
+                    <a href="@Url.Action("Details", "Agency", new{id=ViewBag.ApplicationUser.Agency.Id})" class="btn btn-info btn-sm">Go to "My Agency"</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

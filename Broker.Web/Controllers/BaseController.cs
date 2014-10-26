@@ -13,9 +13,11 @@ namespace Broker.Web.Controllers
 {
     public class BaseController : Controller
     {
+        protected static ApplicationDbContext Db = new ApplicationDbContext();
+
         public BaseController()
             : this(new UserManager<ApplicationUser>(
-                new UserStore<ApplicationUser>(new ApplicationDbContext())))
+                new UserStore<ApplicationUser>(Db)))
         {
         }
 

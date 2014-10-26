@@ -19,8 +19,18 @@
 <div style="margin-top: 20px">
     <ul class="nav nav-tabs" role="tablist">
         <li class="active"><a href="#details" role="tab" data-toggle="tab">Details</a></li>
-        <li><a href="#participants" role="tab" data-toggle="tab">Participants</a></li>
-        <li><a href="#comments" role="tab" data-toggle="tab">Comments</a></li>
+        <li><a href="#participants" role="tab" data-toggle="tab">Participants
+                <span class="badge">@Model.Participants.Count</span>
+            </a>
+        </li>
+        <li>
+            <a href="#candidates" role="tab" data-toggle="tab">Candidates
+                @if (@Model.Candidacies.Count > 0)
+                {
+                    <span class="badge alert-danger">@Model.Candidacies.Count</span>
+                }
+            </a>
+        </li>
     </ul>
 
     <!-- Tab panes -->
@@ -92,6 +102,8 @@
                         </div>
                     </div>
                 </div>
+                
+                
                 <div class="tab-pane" id="participants">
                     <table class="table">
                         <tr>
@@ -111,7 +123,30 @@
                         }
                     </table>
                 </div>
-                <div class="tab-pane" id="comments">...</div>
+                <div class="tab-pane" id="candidates">
+                    <table class="table">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th></th>
+                        </tr>
+                        @foreach (var candidacy in @Model.Candidacies)
+                        {
+                            <tr>
+                                <td><img src="@Html.Image(candidacy.Candidator.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" class="img-circle" /></td>
+                                <td>@candidacy.Candidator.FirstName @candidacy.Candidator.LastName</td>
+                                <td>8.9/10</td>
+                                <td>
+                                    @Html.ActionLink("Details", "Details", "Account", new { id = candidacy.Candidator.Id }, new { @class = "btn btn-info btn-sm" })
+                                    @Html.ActionLink("Accept", "AcceptCandidacy", "Agency", new { id = candidacy.Candidator.Id }, new { @class = "btn btn-success btn-sm" })
+                                    @Html.ActionLink("Decline", "DeclineCandidacy", "Agency", new { id = candidacy.Candidator.Id }, new { @class = "btn btn-danger btn-sm" })
+                                </td>
+
+                            </tr>
+                        }
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model System.Collections.Generic.List<Broker.Models.Mail>
+           
+@{
+    ViewBag.Title = "Inbox";   
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <tr>
+        <th>From</th>
+        <th>Subject</th>
+        <th>Content</th>
+        <th>Date</th>
+        <th></th>
+    </tr>
+    @foreach (var mail in Model)
+    {
+        <tr class="@(!mail.IsRead?"new-mail":"")">
+            <td>@mail.FromUser.FirstName @mail.FromUser.LastName</td>
+            <td>@mail.Title</td>
+            <td>@mail.Body</td>
+            <td>@mail.CreatedAt</td>
+            <td>
+                <a href="@Url.Action("Read", "Mail", new {id=mail.Id})" class="btn btn-info btn-sm">Read</a>
+            </td>
+        </tr>
+    }
+</table>

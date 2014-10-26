@@ -1,5 +1,8 @@
-﻿@using Microsoft.AspNet.Identity
+﻿@using System.Collections.Generic
+@using Broker.Models
+@using Microsoft.AspNet.Identity
 @using Broker.Web.Constants
+@using System.Linq;
 
 @if (Request.IsAuthenticated)
 {
@@ -33,6 +36,20 @@
                         <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a href="@Url.Action("Inbox", "Mail")">
+                    <div>
+                        <span class="glyphicon glyphicon-envelope"></span>
+                        @{ List<Mail> mails = ViewBag.ApplicationUser.Mails; }
+                        @if (mails.Any(x => x.IsRead == false))
+                        {
+                            <span class="badge alert-danger">
+                                @mails.Count(x=>x.IsRead==false)
+                            </span>
+                        }
+                    </div>
+                </a>
             </li>
             <li>
                 <a href="@Url.Action("Details", "Account")" style="padding-bottom:8px; padding-top:10px;">

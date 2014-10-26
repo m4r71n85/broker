@@ -9,6 +9,12 @@ namespace Broker.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        private List<Mail> _mails;
+
+        public ApplicationUser()
+        {
+            _mails = new List<Mail>();
+        }
         public virtual Agency Agency { get; set; }
         public bool IsAgencyCreator { get; set; }
         public string Image { get; set; }
@@ -18,6 +24,6 @@ namespace Broker.Models
         public string PhoneHome { get; set; }
         public string PhoneWork { get; set; }
         public string PhoneCell { get; set; }
-
+        public virtual List<Mail> Mails { get { return _mails; } set { _mails = value; } }
     }
 }

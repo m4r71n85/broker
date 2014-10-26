@@ -22,17 +22,14 @@ namespace Broker.Web.Controllers
 {
     public class AgencyController : BaseController
     {
-        
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         public ActionResult Index()
         {
-            return View(db.Agencies.ToList());
+            return View(Db.Agencies.ToList());
         }
 
         public ActionResult List()
         {
-            return View(db.Agencies.ToList());
+            return View(Db.Agencies.ToList());
         }
 
         // GET: /Agency/Details/5
@@ -42,7 +39,7 @@ namespace Broker.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Agency agency = await db.Agencies.Where(x => x.Id == (id ?? -1)).FirstOrDefaultAsync();
+            Agency agency = await Db.Agencies.Where(x => x.Id == (id ?? -1)).FirstOrDefaultAsync();
             if (agency == null)
             {
                 return HttpNotFound();
@@ -75,7 +72,7 @@ namespace Broker.Web.Controllers
             
             if (ModelState.IsValid)
             {
-                var agency = new Agency() { Image = agencyVm.Image, Address = agencyVm.Address, Description = agencyVm.Description, Email = agencyVm.Email, HomePhone = agencyVm.HomePhone, MobilePhone = agencyVm.MobilePhone, Name = agencyVm.Name };
+                var agency = new Agency() { Image = agencyVm.Image, Address = agencyVm.Address, Description = agencyVm.Description, Email = agencyVm.Email, HomePhone = agencyVm.HomePhone, MobilePhone = agencyVm.MobilePhone, Name = agencyVm.Name, Participants = new List<ApplicationUser> { ApplicationUser } };
                 
                 ApplicationUser.Agency = agency;
                 ApplicationUser.IsAgencyCreator= true;
@@ -96,7 +93,7 @@ namespace Broker.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Agency agency = await db.Agencies.Where(x => x.Id == (id ?? -1)).FirstOrDefaultAsync();
+            Agency agency = await Db.Agencies.Where(x => x.Id == (id ?? -1)).FirstOrDefaultAsync();
             if (agency == null)
             {
                 return HttpNotFound();
@@ -113,8 +110,8 @@ namespace Broker.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(agency).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                Db.Entry(agency).State = EntityState.Modified;
+                await Db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(agency);
@@ -127,7 +124,7 @@ namespace Broker.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Agency agency = await db.Agencies.Where(x => x.Id == (id ?? -1)).FirstOrDefaultAsync();
+            Agency agency = await Db.Agencies.Where(x => x.Id == (id ?? -1)).FirstOrDefaultAsync();
             if (agency == null)
             {
                 return HttpNotFound();
@@ -140,7 +137,7 @@ namespace Broker.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Agency agency = await db.Agencies.Where(x => x.Id == id).FirstOrDefaultAsync();
+            Agency agency = await Db.Agencies.Where(x => x.Id == id).FirstOrDefaultAsync();
             var imageFile = agency.Image;
             if (imageFile!=null)
             {
@@ -154,37 +151,49 @@ namespace Broker.Web.Controllers
                     }
                 }
             }
-            db.Agencies.Remove(agency);
-            await db.SaveChangesAsync();
+            Db.Agencies.Remove(agency);
+            await Db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         public ActionResult Join(int id)
         {
-            var agency = db.Agencies.FirstOrDefault(x => x.Id == id);
-            var currentUser = db.Users.FirstOrDefault(x => x.Id == ApplicationUser.Id);
+            var agency = Db.Agencies.FirstOrDefault(x => x.Id == id);
+            var currentUser = Db.Users.FirstOrDefault(x => x.Id == ApplicationUser.Id);
 
-            AgencyCandidacy candidacy = db.AgencyCandidacies.FirstOrDefault(x => x.Candidator.Id == currentUser.Id);
+            AgencyCandidacy candidacy = Db.AgencyCandidacies.FirstOrDefault(x => x.Candidator.Id == currentUser.Id);
             if (candidacy == null)
             {
                 candidacy = new AgencyCandidacy { Candidator = currentUser, Agency = agency};
             }
-            db.AgencyCandidacies.AddOrUpdate(candidacy);
-            
-            db.SaveChanges();
-            //var creatorUser = agency.Participants.FirstOrDefault(x => x.IsAgencyCreator);
+            Db.AgencyCandidacies.AddOrUpdate(candidacy);
 
+            var agencyCreator = agency.Participants.FirstOrDefault(x => x.IsAgencyCreator);
+            Db.Mails.Add(new Mail
+            {
+                FromUser = currentUser,
+                ToUser = agencyCreator,
+                MailType = MailType.ParticipationRequest,
+                Title =
+                    string.Format("User {0} {1} wants to participate in {2} company.", currentUser.FirstName,
+                        currentUser.LastName, agency.Name),
+                Body = "For more information go to 'My Agency > Candidates'",
+            });
+            Db.SaveChanges();
 
             return null;
         }
 
-        protected override void Dispose(bool disposing)
+        public ActionResult AcceptCandidacy(int id)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return null;
         }
+
+        public ActionResult DeclineCandidacy(int id)
+        {
+            return null;
+        }
+
+
     }
 }

@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Broker.Models
 {
     public class Agency
     {
         private List<ApplicationUser> _participants;
-        private List<ApplicationUser> _candidators;
+        private List<AgencyCandidacy> _candidacies;
 
         public Agency()
         {
             _participants = new List<ApplicationUser>();
-            _candidators = new List<ApplicationUser>();
+            _candidacies = new List<AgencyCandidacy>();
         }
 
         public int Id { get; set; }
@@ -21,7 +22,11 @@ namespace Broker.Models
         public string HomePhone { get; set; }
         public string MobilePhone { get; set; }
         public string Address { get; set; }
+
+        [InverseProperty("Agency")]
         public virtual List<ApplicationUser> Participants { get { return _participants; } set { _participants = value; } }
-        public virtual List<ApplicationUser> Candidators { get { return _candidators; } set { _candidators = value; } }
+
+        [InverseProperty("Agency")]
+        public virtual List<AgencyCandidacy> Candidacies { get { return _candidacies; } set { _candidacies = value; } }
     }
 }
