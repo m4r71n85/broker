@@ -184,14 +184,31 @@ namespace Broker.Web.Controllers
             return null;
         }
 
-        public ActionResult AcceptCandidacy(int id)
+        public ActionResult AcceptCandidacy(string id)
         {
-            return null;
+            var agency = ApplicationUser.Agency;
+            var candidator = Db.Users.FirstOrDefault(x=>x.Id == id);
+            var candidacy = Db.AgencyCandidacies.FirstOrDefault(x => x.Agency.Id == agency.Id && x.Candidator.Id == id);
+            if (candidacy!=null)
+            {
+                agency.Participants.Add(candidator);
+                Db.AgencyCandidacies.Remove(candidacy);
+                Db.SaveChanges();
+            }
+            return RedirectToAction("Details");
         }
 
-        public ActionResult DeclineCandidacy(int id)
+        public ActionResult DeclineCandidacy(string id)
         {
-            return null;
+            var agency = ApplicationUser.Agency;
+            var candidator = Db.Users.FirstOrDefault(x => x.Id == id);
+            var candidacy = Db.AgencyCandidacies.FirstOrDefault(x => x.Agency.Id == agency.Id && x.Candidator.Id == id);
+            if (candidacy != null)
+            {
+                Db.AgencyCandidacies.Remove(candidacy);
+                Db.SaveChanges();
+            }
+            return RedirectToAction("Details");
         }
 
 
