@@ -8,7 +8,7 @@ namespace Broker.Web.Constants
     public static class UserRoles
     {
         public const string Admin = "Admin";
-        public const string CompanyParticipant = "CompanyParticipant";
+        public const string CompanyParticipator = "CompanyParticipator";
         public const string CompanyCreator = "CompanyCreator";
     }
 }

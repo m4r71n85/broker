@@ -362,6 +362,7 @@ namespace Broker.Web.Controllers
                 ApplicationUser.PhoneWork = details.PhoneHome;
 
                 UserManager.Update(ApplicationUser);
+                RedirectToAction("Details");
             }
             return View(details);
         }

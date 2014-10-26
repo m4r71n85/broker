@@ -16,11 +16,11 @@ namespace Broker.Web.ViewModels
     }
     public class AgencyViewModel
     {
-        private List<ApplicationUser> users;
+        private List<ApplicationUser> _agencyParticipants;
 
         public AgencyViewModel()
         {
-            users = new List<ApplicationUser>();
+            _agencyParticipants = new List<ApplicationUser>();
         }
 
         [Required]
@@ -51,7 +51,7 @@ namespace Broker.Web.ViewModels
         [Display(Name = "Address")]
         public string Address { get; set; }
 
-        public virtual List<ApplicationUser> Users { get { return users; } set { users = value; } }
+        public virtual List<ApplicationUser> AgencyParticipants { get { return _agencyParticipants; } set { _agencyParticipants = value; } }
 
     }
 }

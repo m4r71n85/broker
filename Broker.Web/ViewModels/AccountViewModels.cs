@@ -118,4 +118,14 @@ namespace Broker.Web.ViewModels
         public bool isAgencyCreator { get; set; }
         public AgencyViewTeasedModel Agency { get; set; }
     }
+
+    public class AccountTeasedViewModel
+    {
+        public string Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Image { get; set; }
+        public AgencyViewTeasedModel AgencyTeased { get; set; }
+
+    }
 }

@@ -1,4 +1,5 @@
 ﻿@model Broker.Models.Agency
+@using System.Drawing
 @using Broker.Web.Helpers
 @using Broker.Web.Constants
 
@@ -92,10 +93,23 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="participants">
-                    @foreach (var user in @Model.Users)
-                    {
-                        <p>@user.FirstName</p>
-                    }
+                    <table class="table">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Rank</th>
+                            <th></th>
+                        </tr>
+                        @foreach (var user in @Model.Participants)
+                        {
+                            <tr>
+                                <td><img src="@Html.Image(user.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" class="img-circle"/></td>
+                                <td>@user.FirstName @user.LastName</td>
+                                <td>8.9/10</td>
+                                <td>@Html.ActionLink("Details", "Details", "Account", new { id = user.Id }, new { @class = "btn btn-info btn-sm" })</td>
+                            </tr>
+                        }
+                    </table>
                 </div>
                 <div class="tab-pane" id="comments">...</div>
             </div>

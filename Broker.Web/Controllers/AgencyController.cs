@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
@@ -24,10 +25,14 @@ namespace Broker.Web.Controllers
         
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: /Agency/
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await db.Agencies.ToListAsync());
+            return View(db.Agencies.ToList());
+        }
+
+        public ActionResult List()
+        {
+            return View(db.Agencies.ToList());
         }
 
         // GET: /Agency/Details/5
@@ -71,15 +76,12 @@ namespace Broker.Web.Controllers
             if (ModelState.IsValid)
             {
                 var agency = new Agency() { Image = agencyVm.Image, Address = agencyVm.Address, Description = agencyVm.Description, Email = agencyVm.Email, HomePhone = agencyVm.HomePhone, MobilePhone = agencyVm.MobilePhone, Name = agencyVm.Name };
-                db.Agencies.Add(agency);
-                db.SaveChanges( );
                 
-                ApplicationUser.IsAgencyCreator = true;
                 ApplicationUser.Agency = agency;
+                ApplicationUser.IsAgencyCreator= true;
 
-                //var roles = UserManager.GetRoles(userId);
-                //UserManager.RemoveFromRoles(userId, roles.ToArray());
                 UserManager.AddToRole(ApplicationUser.Id, UserRoles.CompanyCreator);
+                UserManager.AddToRole(ApplicationUser.Id, UserRoles.CompanyParticipator);
 
                 return RedirectToAction("Index");
             }
@@ -155,6 +157,25 @@ namespace Broker.Web.Controllers
             db.Agencies.Remove(agency);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Join(int id)
+        {
+            var agency = db.Agencies.FirstOrDefault(x => x.Id == id);
+            var currentUser = db.Users.FirstOrDefault(x => x.Id == ApplicationUser.Id);
+
+            AgencyCandidacy candidacy = db.AgencyCandidacies.FirstOrDefault(x => x.Candidator.Id == currentUser.Id);
+            if (candidacy == null)
+            {
+                candidacy = new AgencyCandidacy { Candidator = currentUser, Agency = agency};
+            }
+            db.AgencyCandidacies.AddOrUpdate(candidacy);
+            
+            db.SaveChanges();
+            //var creatorUser = agency.Participants.FirstOrDefault(x => x.IsAgencyCreator);
+
+
+            return null;
         }
 
         protected override void Dispose(bool disposing)

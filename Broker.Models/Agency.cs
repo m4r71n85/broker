@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Broker.Models
 {
     public class Agency
     {
-        private List<ApplicationUser> users;
+        private List<ApplicationUser> _participants;
+        private List<ApplicationUser> _candidators;
 
         public Agency()
         {
-            users = new List<ApplicationUser>();
+            _participants = new List<ApplicationUser>();
+            _candidators = new List<ApplicationUser>();
         }
 
         public int Id { get; set; }
@@ -24,6 +21,7 @@ namespace Broker.Models
         public string HomePhone { get; set; }
         public string MobilePhone { get; set; }
         public string Address { get; set; }
-        public virtual List<ApplicationUser> Users { get { return users; } set { users = value; } }
+        public virtual List<ApplicationUser> Participants { get { return _participants; } set { _participants = value; } }
+        public virtual List<ApplicationUser> Candidators { get { return _candidators; } set { _candidators = value; } }
     }
 }

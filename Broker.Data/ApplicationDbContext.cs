@@ -1,12 +1,7 @@
 ﻿using Broker.Data.Migrations;
 using Broker.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Broker.Data
 {
@@ -20,6 +15,6 @@ namespace Broker.Data
         }
 
         public IDbSet<Agency> Agencies { get; set; }
-
+        public IDbSet<AgencyCandidacy> AgencyCandidacies { get; set; }
     }
 }

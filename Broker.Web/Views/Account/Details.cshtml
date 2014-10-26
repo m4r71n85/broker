@@ -1,19 +1,28 @@
-﻿@model DetailsFullViewModel
+﻿@using Broker.Models
+@model DetailsFullViewModel
 @{
     ViewBag.Title = "Details";
 }
 
 <div class="row">
     <div class="col-sm-2">
-        <img src="@Html.Image(Model.Image, ImageType.ProfilePhoto, ImageSizes.Normal)" class="img-circle"/>
+        @if (Model.Image != null)
+        {
+            <img src="@Html.Image(Model.Image, ImageType.ProfilePhoto, ImageSizes.Normal)" class="img-circle"/>
+        }
         <div>
             Rank: 8.9 / 10
         </div>
+        @if (Model.Id == ViewBag.ApplicationUser.Id) { 
+            <div>
+                <a class="btn btn-info" href="@Url.Action("Edit")">Edit profile</a>
+            </div>
+        }
     </div>
 
     <div class="col-sm-4">
         <h2>Company</h2>
-        @if (Model.Agency != null)
+        @if (Model.Agency.Id != 0)
         {
             <img src="@Html.Image(Model.Agency.Image, ImageType.AgencyLogo, ImageSizes.Normal)"/>
             @Model.Agency.Name<br/>
@@ -44,7 +53,6 @@
             </div>
             <div class="col-sm-8">
                 <img src="@Html.GoogleQrImage(Url.Action("Details", "Account", new { id = Model.Id }, Request.Url.Scheme))"/>
-                
             </div>
 
         </div>
@@ -78,8 +86,10 @@
             Address:
         </div>
         <div class="col-sm-8">
-            <img src="@Html.GoogleStaticImage(Model.Address)"/><br/>
-            @Model.Address
+            @if(Model.Address!=null) { 
+                <img src="@Html.GoogleStaticImage(Model.Address)"/><br/>
+                @Model.Address
+            }
         </div>
     </div>
 </div>
