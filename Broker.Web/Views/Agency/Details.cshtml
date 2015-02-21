@@ -1,5 +1,7 @@
 ﻿@model Broker.Models.Agency
+@using System
 @using System.Drawing
+@using Broker.Models
 @using Broker.Web.Helpers
 @using Broker.Web.Constants
 
@@ -23,14 +25,18 @@
                 <span class="badge">@Model.Participants.Count</span>
             </a>
         </li>
-        <li>
-            <a href="#candidates" role="tab" data-toggle="tab">Candidates
-                @if (@Model.Candidacies.Count > 0)
-                {
-                    <span class="badge alert-danger">@Model.Candidacies.Count</span>
-                }
-            </a>
-        </li>
+        @if (ViewBag.ApplicationUser.Agency != null
+                && (ViewBag.ApplicationUser.Agency.Id == Model.Id && ViewBag.ApplicationUser.IsAgencyCreator))
+        {
+            <li>
+                <a href="#candidates" role="tab" data-toggle="tab">Candidates
+                    @if (@Model.Candidacies.Count > 0)
+                    {
+                        <span class="badge alert-danger">@Model.Candidacies.Count</span>
+                    }
+                </a>
+            </li>
+        }
     </ul>
 
     <!-- Tab panes -->
@@ -64,6 +70,21 @@
                                     <img src="@Html.GoogleQrImage(Request.Url.ToString())" />
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    @if (ViewBag.ApplicationUser.Agency != null
+                                && (ViewBag.ApplicationUser.Agency.Id == Model.Id && !ViewBag.ApplicationUser.IsAgencyCreator))
+                                    {
+
+                                        @Html.ActionLink("Leave Agency", "Leave", null, new { @class = "btn btn-danger" })
+                                    }
+                                    else if (ViewBag.ApplicationUser.Agency == null)
+                                    {
+                                        @Html.ActionLink("Candidate", "Candidate", htmlAttributes: new { @class = "btn btn-info btn-sm" }, routeValues: new { id = Model.Id })
+                                    }
+                                </div>
+                            </div>
+
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
@@ -115,7 +136,16 @@
                         @foreach (var user in @Model.Participants)
                         {
                             <tr>
-                                <td><img src="@Html.Image(user.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" class="img-circle"/></td>
+                                <td>
+                                    @if (user.Image != null)
+                                    {
+                                        <img src="@Html.Image(user.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" class="img-circle"/>
+                                    }
+                                    else
+                                    {
+                                        <span class="glyphicon glyphicon-user" style="font-size:25px"></span>
+                                    }
+                                </td>
                                 <td>@user.FirstName @user.LastName</td>
                                 <td>8.9/10</td>
                                 <td>@Html.ActionLink("Details", "Details", "Account", new { id = user.Id }, new { @class = "btn btn-info btn-sm" })</td>
@@ -123,30 +153,42 @@
                         }
                     </table>
                 </div>
-                <div class="tab-pane" id="candidates">
-                    <table class="table">
-                        <tr>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Rank</th>
-                            <th></th>
-                        </tr>
-                        @foreach (var candidacy in @Model.Candidacies)
-                        {
+                @if (ViewBag.ApplicationUser.Agency != null
+                     && (ViewBag.ApplicationUser.Agency.Id == Model.Id && ViewBag.ApplicationUser.IsAgencyCreator))
+                {
+                    <div class="tab-pane" id="candidates">
+                        <table class="table">
                             <tr>
-                                <td><img src="@Html.Image(candidacy.Candidator.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" class="img-circle" /></td>
-                                <td>@candidacy.Candidator.FirstName @candidacy.Candidator.LastName</td>
-                                <td>8.9/10</td>
-                                <td>
-                                    @Html.ActionLink("Details", "Details", "Account", new { id = candidacy.Candidator.Id }, new { @class = "btn btn-info btn-sm" })
-                                    @Html.ActionLink("Accept", "AcceptCandidacy", "Agency", new { id = candidacy.Candidator.Id }, new { @class = "btn btn-success btn-sm" })
-                                    @Html.ActionLink("Decline", "DeclineCandidacy", "Agency", new { id = candidacy.Candidator.Id }, new { @class = "btn btn-danger btn-sm" })
-                                </td>
-
+                                <th>Photo</th>
+                                <th>Name</th>
+                                <th>Rank</th>
+                                <th></th>
                             </tr>
-                        }
-                    </table>
-                </div>
+                            @foreach (var candidacy in @Model.Candidacies)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (candidacy.Candidator.Image != null)
+                                        {
+                                            <img src="@Html.Image(candidacy.Candidator.Image, ImageType.ProfilePhoto, ImageSizes.Tiny)" class="img-circle" />
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-user" style="font-size:25px"></span>
+                                        }
+                                    </td>
+                                    <td>@candidacy.Candidator.FirstName @candidacy.Candidator.LastName</td>
+                                    <td>8.9/10</td>
+                                    <td>
+                                        @Html.ActionLink("Accept", "AcceptCandidacy", "Agency", new {id = candidacy.Candidator.Id}, new {@class = "btn btn-success btn-sm"})
+                                        @Html.ActionLink("Decline", "DeclineCandidacy", "Agency", new {id = candidacy.Candidator.Id}, new {@class = "btn btn-danger btn-sm"})
+                                        @Html.ActionLink("Details", "Details", "Account", new {id = candidacy.Candidator.Id}, new {@class = "btn btn-info btn-sm"})
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                }
             </div>
         </div>
     </div>

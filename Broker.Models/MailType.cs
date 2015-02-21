@@ -7,6 +7,7 @@ namespace Broker.Models
 {
     public enum MailType
     {
-        ParticipationRequest
+        ParticipationRequest,
+        Informational
     }
 }

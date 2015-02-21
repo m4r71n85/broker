@@ -17,7 +17,7 @@
                 From:
             </div>
             <div class="col-xs-10">
-                <img src="@Html.Image(@Model.FromUser.Image, ImageType.ProfilePhoto, ImageSizes.Small)"/>
+                <img src="@Html.Image(@Model.FromUser.Image, ImageType.ProfilePhoto, ImageSizes.Small)" class="img-circle"/>
                 @Model.FromUser.FirstName @Model.FromUser.LastName
                 <a href="@Url.Action("Details", "Account", new{id=Model.FromUser.Id})" class="btn btn-info btn-sm">View Profile</a>
             </div>

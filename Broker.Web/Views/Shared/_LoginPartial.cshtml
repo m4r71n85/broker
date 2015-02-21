@@ -13,7 +13,13 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                    @User.Identity.GetUserName()
+                    @if (ViewBag.ApplicationUser.FirstName != null && ViewBag.ApplicationUser.LastName!=null)
+                    {
+                        <span>@ViewBag.ApplicationUser.FirstName  @ViewBag.ApplicationUser.LastName</span>
+                    }
+                    else { 
+                        <span>@User.Identity.GetUserName()</span>
+                    }
                     <strong class="caret"></strong>
                 </a>
                 <ul id="dropdownAdmin" class="dropdown-menu userDropdown">

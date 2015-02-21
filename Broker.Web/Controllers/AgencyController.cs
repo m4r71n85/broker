@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -9,14 +7,10 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Broker.Models;
-using Broker.Data;
 using Broker.Web.ViewModels;
 using Broker.Web.Helpers;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Broker.Web.Constants;
-using ImageResizer;
-using System.IO;
 
 namespace Broker.Web.Controllers
 {
@@ -35,10 +29,6 @@ namespace Broker.Web.Controllers
         // GET: /Agency/Details/5
         public async Task<ActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Agency agency = await Db.Agencies.Where(x => x.Id == (id ?? -1)).FirstOrDefaultAsync();
             if (agency == null)
             {
@@ -47,7 +37,7 @@ namespace Broker.Web.Controllers
             
             ViewBag.googleQr =  new GoogleQRGenerator.GoogleQr(
                 Url.Action("Details", "Agency", new { id = agency.Id }, 
-                this.Request.Url.Scheme), "200x200", false);
+                Request.Url.Scheme), "200x200", false);
             return View(agency);
         }
 
@@ -80,7 +70,9 @@ namespace Broker.Web.Controllers
                 UserManager.AddToRole(ApplicationUser.Id, UserRoles.CompanyCreator);
                 UserManager.AddToRole(ApplicationUser.Id, UserRoles.CompanyParticipator);
 
-                return RedirectToAction("Index");
+                var message = "Agency created successfully.";
+                Alerts.Add(TempData, new AlertProps(message));
+                return RedirectToAction("List");
             }
 
             return View(agencyVm);
@@ -112,6 +104,9 @@ namespace Broker.Web.Controllers
             {
                 Db.Entry(agency).State = EntityState.Modified;
                 await Db.SaveChangesAsync();
+
+                var message = "Changes saved successfully.";
+                Alerts.Add(TempData, new AlertProps(message));
                 return RedirectToAction("Index");
             }
             return View(agency);
@@ -122,11 +117,15 @@ namespace Broker.Web.Controllers
         {
             if (id == null)
             {
+                var message = "Delete can't be null.";
+                Alerts.Add(TempData, new AlertProps(AlertType.Danger, message));
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Agency agency = await Db.Agencies.Where(x => x.Id == (id ?? -1)).FirstOrDefaultAsync();
+            Agency agency = await Db.Agencies.Where(x => x.Id == ((int) id)).FirstOrDefaultAsync();
             if (agency == null)
             {
+                var message = "Can't find agency.";
+                Alerts.Add(TempData, new AlertProps(AlertType.Danger, message));
                 return HttpNotFound();
             }
             return View(agency);
@@ -153,10 +152,14 @@ namespace Broker.Web.Controllers
             }
             Db.Agencies.Remove(agency);
             await Db.SaveChangesAsync();
+
+            var message = "Agency deleted successfully.";
+            Alerts.Add(TempData, new AlertProps(message));
+
             return RedirectToAction("Index");
         }
 
-        public ActionResult Join(int id)
+        public ActionResult Candidate(int id)
         {
             var agency = Db.Agencies.FirstOrDefault(x => x.Id == id);
             var currentUser = Db.Users.FirstOrDefault(x => x.Id == ApplicationUser.Id);
@@ -181,7 +184,10 @@ namespace Broker.Web.Controllers
             });
             Db.SaveChanges();
 
-            return null;
+            var message = "Your candidacy to <strong>'" + agency.Name + "'</strong> has to be approved by administrator.";
+            Alerts.Add(TempData, new AlertProps(message));
+
+            return RedirectToAction("Details", new { agency.Id });
         }
 
         public ActionResult AcceptCandidacy(string id)
@@ -193,24 +199,63 @@ namespace Broker.Web.Controllers
             {
                 agency.Participants.Add(candidator);
                 Db.AgencyCandidacies.Remove(candidacy);
+
+                Db.Mails.Add(new Mail
+                {
+                    FromUser = ApplicationUser,
+                    ToUser = candidator,
+                    MailType = MailType.Informational,
+                    Title = "Your candidacy has been approved",
+                    Body = "You now participate in '"+agency.Name+"' agency.",
+                });
+
                 Db.SaveChanges();
             }
-            return RedirectToAction("Details");
+
+            var message = "Candidacy accepted successfully.";
+            Alerts.Add(TempData, new AlertProps(message));
+
+            return RedirectToAction("Details", new { agency.Id });
         }
 
         public ActionResult DeclineCandidacy(string id)
         {
             var agency = ApplicationUser.Agency;
-            var candidator = Db.Users.FirstOrDefault(x => x.Id == id);
             var candidacy = Db.AgencyCandidacies.FirstOrDefault(x => x.Agency.Id == agency.Id && x.Candidator.Id == id);
             if (candidacy != null)
             {
                 Db.AgencyCandidacies.Remove(candidacy);
                 Db.SaveChanges();
             }
-            return RedirectToAction("Details");
+            
+            var message = "Candidacy declined successfully.";
+            Alerts.Add(TempData, new AlertProps(message));
+
+            return RedirectToAction("Details", new { agency.Id });
         }
 
+        public ActionResult Leave()
+        {
+            var agency = ApplicationUser.Agency;
+            
+            agency.Participants.Remove(ApplicationUser);
+            var agencyCreator = agency.Participants.FirstOrDefault(x => x.IsAgencyCreator);
+            Db.Mails.Add(new Mail
+            {
+                FromUser = ApplicationUser,
+                ToUser = agencyCreator,
+                MailType = MailType.ParticipationRequest,
+                Title =
+                    string.Format("User {0} {1} has left '{2}' company.", ApplicationUser.FirstName,
+                        ApplicationUser.LastName, agency.Name),
+                Body = "For more information go to 'My Agency > Candidates'",
+            });
 
+            var message = "Agency left successfully.";
+            Alerts.Add(TempData, new AlertProps(message));
+
+            Db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

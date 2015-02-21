@@ -12,7 +12,7 @@ namespace Broker.Web.Controllers
         // GET: /Mail/
         public ActionResult Inbox()
         {
-            var mails = ApplicationUser.Mails;
+            var mails = ApplicationUser.Mails.OrderByDescending(x=>x.CreatedAt).ToList();
             return View(mails);
         }
 

@@ -27,9 +27,9 @@
         <td>@item.Address</td>
         <td>
             @Html.ActionLink("Details", "Details", htmlAttributes: new { @class = "btn btn-info btn-sm" }, routeValues: new { id = item.Id })
-            @if (!User.IsInRole(UserRoles.CompanyParticipator))
+            @if (ViewBag.ApplicationUser.Agency == null)
             {
-                @Html.ActionLink("Join", "Join", htmlAttributes: new {@class = "btn btn-info btn-sm"}, routeValues: new {id = item.Id});
+                @Html.ActionLink("Candidate", "Candidate", htmlAttributes: new {@class = "btn btn-info btn-sm"}, routeValues: new {id = item.Id});
             }
         </td>
     </tr>
