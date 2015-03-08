@@ -190,6 +190,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\OfferController.cs" />
     <Compile Include="Helpers\Alert.cs" />
     <Compile Include="Constants\ImageSizes.cs" />
     <Compile Include="Constants\Roles.cs" />
@@ -287,11 +289,20 @@
     <Content Include="Views\Agency\List.cshtml" />
     <Content Include="Views\Mail\Inbox.cshtml" />
     <Content Include="Views\Mail\Read.cshtml" />
+    <Content Include="Views\Offer\Create.cshtml" />
+    <Content Include="Views\Offer\Delete.cshtml" />
+    <Content Include="Views\Offer\Details.cshtml" />
+    <Content Include="Views\Offer\Edit.cshtml" />
+    <Content Include="Views\Offer\Index.cshtml" />
+    <Content Include="Views\Client\Create.cshtml" />
+    <Content Include="Views\Client\Delete.cshtml" />
+    <Content Include="Views\Client\Details.cshtml" />
+    <Content Include="Views\Client\Edit.cshtml" />
+    <Content Include="Views\Client\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Files\" />
-    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

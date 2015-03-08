@@ -86,8 +86,10 @@
     <Compile Include="Agency.cs" />
     <Compile Include="AgencyCandidacy.cs" />
     <Compile Include="ApplicationUser.cs" />
+    <Compile Include="Clients.cs" />
     <Compile Include="Mail.cs" />
     <Compile Include="MailType.cs" />
+    <Compile Include="Offer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

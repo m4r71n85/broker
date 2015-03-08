@@ -25,7 +25,39 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Agencies", "List", "Agency")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span>Offers</span>
+                                <strong class="caret"></strong>
+                            </a>
+                            <ul id="dropdownAdmin" class="dropdown-menu userDropdown">
+                                <li>
+                                    @Html.ActionLink("My Offers", "Index", "Offer", routeValues: null, htmlAttributes: new { title = "User details" })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Create Offer", "Create", "Offer", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span>Search Criterias</span>
+                                <strong class="caret"></strong>
+                            </a>
+                            <ul id="dropdownAdmin" class="dropdown-menu userDropdown">
+                                <li>
+                                    @Html.ActionLink("My Search Criterias", "Index", "Offer", routeValues: null, htmlAttributes: new { title = "User details" })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Create Search Criterias", "Create", "Offer", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                </li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

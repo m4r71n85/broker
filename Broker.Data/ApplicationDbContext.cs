@@ -17,5 +17,9 @@ namespace Broker.Data
         public IDbSet<Agency> Agencies { get; set; }
         public IDbSet<AgencyCandidacy> AgencyCandidacies { get; set; }
         public IDbSet<Mail> Mails { get; set; }
+
+        public IDbSet<Offer> Offers { get; set; }
+
+        public IDbSet<Client> Clients { get; set; }
     }
 }

@@ -26,7 +26,6 @@ namespace Broker.Web.Controllers
             UserManager = userManager;
             var userId = System.Web.HttpContext.Current.User;
             ApplicationUser = UserManager.FindById(userId.Identity.GetUserId());
-
             ViewBag.ApplicationUser = ApplicationUser;
         }
         public UserManager<ApplicationUser> UserManager { get; set; }
